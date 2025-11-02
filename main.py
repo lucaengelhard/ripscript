@@ -90,8 +90,10 @@ def parse_line(line):
             max = int(max)
 
             percent = round(current * 100 / max, 2)
+            percent_total = round(total * 100 / max, 2)
 
-            log(f"{parse_state["current_process"]} - {percent}%")
+            log(f"{parse_state["current_process"]
+                   } - {percent}% | {percent_total}%", end="\r")
 
         case "PRGT" | "PRGC":
             # Current and total progress title
@@ -102,6 +104,7 @@ def parse_line(line):
             # name - name string
             code, id, name = safe_split(content, 3)
             parse_state["current_process"] = name
+            log("")
 
         case "DRV":
             # Drive scan messages
