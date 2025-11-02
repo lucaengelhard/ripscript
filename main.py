@@ -92,6 +92,7 @@ def parse_line(line):
             percent = round(current * 100 / max, 2)
             percent_total = round(total * 100 / max, 2)
 
+            log("\033[A                             \033[A")
             log(f"{parse_state["current_process"]
                    } - {percent}% | {percent_total}%", end="\r")
 
@@ -104,7 +105,6 @@ def parse_line(line):
             # name - name string
             code, id, name = safe_split(content, 3)
             parse_state["current_process"] = name
-            log("")
 
         case "DRV":
             # Drive scan messages
