@@ -12,8 +12,10 @@ LOG_LEVELS = {
 }
 
 parse_state = {
-    "current_process": "",
-    "titles": []
+    "current_process": None,
+    "titles": {},
+    "current_title_id": None,
+    "current_title_name": None
 }
 
 parser = argparse.ArgumentParser(prog="ripscript")
@@ -83,10 +85,9 @@ def parse_line(line):
             total = int(total)
             max = int(max)
 
-            percent = current * 100 / max
+            percent = int(current * 100 / max)
 
-            log(f"{parse_state["current_process"]
-                   } - {percent}% ({current}/{max})")
+            log(f"{parse_state["current_process"]} - {percent}%")
 
         case "PRGT" | "PRGC":
             # Current and total progress title
@@ -145,6 +146,13 @@ def parse_line(line):
             # value - attribute value
             id, code, _unkown, value = safe_split(content, 4)
 
+            if identifier == "TINFO":
+                if code == "27":
+                    parse_state["titles"][id] = value
+
+                if code == "9":
+                    print(content)
+
         case _:
             log(f"Unhandled stdout: {line}", LOG_LEVELS["message"])
 
@@ -186,3 +194,6 @@ for line in infoproc.stdout:
     parse_line(line)
 
 infoproc.wait()
+
+
+print(parse_state)
