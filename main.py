@@ -227,5 +227,6 @@ for id, title in parse_state["titles"].items():
 
 if args.mode == "info":
     for item in sorted_titles[:args.amount]:
+        print(item)
         print(f"{item[id]} -> {item["filename"]} ({item["length"]})")
     sys.exit()
