@@ -85,7 +85,7 @@ def parse_line(line):
             total = int(total)
             max = int(max)
 
-            percent = int(current * 100 / max)
+            percent = round(current * 100 / max, 2)
 
             log(f"{parse_state["current_process"]} - {percent}%")
 
@@ -148,10 +148,16 @@ def parse_line(line):
 
             if identifier == "TINFO":
                 if code == "27":
-                    parse_state["titles"][id]["title"] = value
+                    if id not in parse_state["titles"]:
+                        parse_state["titles"][id] = {"title": value}
+                    else:
+                        parse_state["titles"][id]["title"] = value
 
                 if code == "9":
-                    parse_state["titles"][id]["length"] = value
+                    if id not in parse_state["titles"]:
+                        parse_state["titles"][id] = {"length": value}
+                    else:
+                        parse_state["titles"][id]["length"] = value
 
         case _:
             log(f"Unhandled stdout: {line}", LOG_LEVELS["message"])
@@ -166,6 +172,7 @@ log("")
 log(f"Input type: {args.input_type}")
 log(f"Input path: {args.input_path}")
 log(f"Name: {args.name}")
+log("")
 
 if args.type == "show":
     if args.season is not None:
