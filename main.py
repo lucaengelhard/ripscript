@@ -14,8 +14,6 @@ LOG_LEVELS = {
 parse_state = {
     "current_process": None,
     "titles": {},
-    "current_title_id": None,
-    "current_title_name": None
 }
 
 parser = argparse.ArgumentParser(prog="ripscript")
@@ -65,6 +63,11 @@ def safe_split(line: str, expected: int):
         split.append("")
 
     return split[0:expected]
+
+
+def parse_time_str(input: str):
+    hours, minutes, seconds = input.split(":")
+    return int(hours) * 3600 + int(minutes) * 60 + int(seconds)
 
 
 def parse_line(line):
@@ -154,10 +157,12 @@ def parse_line(line):
                         parse_state["titles"][id]["title"] = value
 
                 if code == "9":
+                    length = parse_time_str(value)
+
                     if id not in parse_state["titles"]:
-                        parse_state["titles"][id] = {"length": value}
+                        parse_state["titles"][id] = {"length": length}
                     else:
-                        parse_state["titles"][id]["length"] = value
+                        parse_state["titles"][id]["length"] = length
 
         case _:
             log(f"Unhandled stdout: {line}", LOG_LEVELS["message"])
