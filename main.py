@@ -148,10 +148,10 @@ def parse_line(line):
 
             if identifier == "TINFO":
                 if code == "27":
-                    parse_state["titles"][id] = value
+                    parse_state["titles"][id]["title"] = value
 
                 if code == "9":
-                    print(content)
+                    parse_state["titles"][id]["length"] = value
 
         case _:
             log(f"Unhandled stdout: {line}", LOG_LEVELS["message"])
