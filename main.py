@@ -246,6 +246,7 @@ min_length = sorted_titles[args.amount - 1]["length"]
 
 
 log(f"Ripping: {files}")
+'''
 ripproc = subprocess.Popen(["makemkvcon", "-r", "--progress=-same",
                             "--messages=-stdout",
                             f"--minlength={min_length}",
@@ -259,11 +260,11 @@ for line in ripproc.stdout:
     parse_line(line)
 
 ripproc.wait()
-
+''''
 
 for i, file in enumerate(files):
     file_path = pathlib.Path(media_dir, file)
     target_path = pathlib.Path(
-        media_dir, args.name, i if len(files) > 1 else "", ".mkv")
+        media_dir, args.name, str(i) if len(files) > 1 else "", ".mkv")
 
     os.rename(file_path, target_path)
