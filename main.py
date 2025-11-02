@@ -93,7 +93,7 @@ def parse_line(line):
             percent = round(current * 100 / max, 2)
             percent_total = round(total * 100 / max, 2)
 
-            if args.log_level >= LOG_LEVELS["progress"]:
+            if LOG_LEVELS[args.log_level] >= LOG_LEVELS["progress"]:
                 sys.stdout.write("\r\033[K")  # carriage return + clear line
                 sys.stdout.write(
                     f"{parse_state['current_process']} - {percent}% | {percent_total}%")
