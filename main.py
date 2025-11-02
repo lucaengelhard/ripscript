@@ -3,6 +3,7 @@ import argparse
 import pathlib
 import os
 import csv
+import sys
 
 LOG_LEVELS = {
     "quiet": 0,
@@ -197,7 +198,7 @@ if args.mode == "rip":
 
 
 log("Parsing media data")
-infoproc = subprocess.Popen(["makemkvcon", "-r", "--progress=-same",
+infoproc = subprocess.Popen(["makemkvcon", "-r", "--progress=-same", "--messages=-stdout"
                             "info", f"{args.input_type}:{args.input_path}"],
                             text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
@@ -223,4 +224,7 @@ for id, title in parse_state["titles"].items():
 
     sorted_titles.insert(index, title_obj)
 
-print(sorted_titles)
+if args.mode == "info":
+    for item in sorted_titles[:args.amount]:
+        print(f"{item[id]} -> {item[filename]} ({item["length"]})")
+    sys.exit()
