@@ -228,4 +228,24 @@ for id, title in parse_state["titles"].items():
 if args.mode == "info":
     for item in sorted_titles[:args.amount]:
         print(f"{item["id"]} -> {item["filename"]} ({item["length"]})")
+
+    print(f"Min length: {sorted_titles[args.amount - 1]["length"]}")
     sys.exit()
+
+files = []
+for item in sorted_titles[:args.amount]:
+    files.append(item["filename"])
+
+min_length = sorted_titles[args.amount - 1]["length"]
+
+
+log(f"Ripping: {files}")
+ripproc = subprocess.Popen(["makemkvcon", "-r", "--progress=-same", "--messages=-stdout", f"--minlength={min_length}", "--decrypt", "--directio=true"
+                            "mkv", f"{args.input_type}:{args.input_path}", "all", media_dir],
+                           text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+
+
+for line in ripproc.stdout:
+    parse_line(line)
+
+ripproc.wait()
