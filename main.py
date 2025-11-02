@@ -152,9 +152,9 @@ def parse_line(line):
             if identifier == "TINFO":
                 if code == "27":
                     if id not in parse_state["titles"]:
-                        parse_state["titles"][id] = {"title": value}
+                        parse_state["titles"][id] = {"filename": value}
                     else:
-                        parse_state["titles"][id]["title"] = value
+                        parse_state["titles"][id]["filename"] = value
 
                 if code == "9":
                     length = parse_time_str(value)
@@ -207,5 +207,20 @@ for line in infoproc.stdout:
 
 infoproc.wait()
 
+sorted_titles = []
 
-print(parse_state)
+for id, title in parse_state["titles"].items():
+    title_obj = {
+        "id": id, "length": title["length"], "filename": title["filename"]}
+
+    if len(sorted_titles) == 0:
+        sorted_titles.append(title_obj)
+        continue
+
+    index = 0
+    while sorted_titles[index]["length"] > title["length"]:
+        index = index + 1
+
+    sorted_titles.insert(index, title_obj)
+
+print(sorted_titles)
