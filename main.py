@@ -264,7 +264,7 @@ ripproc.wait()
 
 for i, file in enumerate(files):
     file_path = pathlib.Path(media_dir, file)
-    target_path = pathlib.Path(
-        media_dir, args.name, str(i) if len(files) > 1 else "", ".mkv")
+    target_filename = f"{args.name} {str(i) if len(files) > 1 else ""}.mkv"
+    target_path = pathlib.Path(media_dir, target_filename)
 
     os.rename(file_path, target_path)
