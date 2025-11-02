@@ -108,7 +108,6 @@ def parse_line(line):
             # name - name string
             code, id, name = safe_split(content, 3)
             parse_state["current_process"] = name
-            log("")
 
         case "DRV":
             # Drive scan messages
