@@ -199,7 +199,7 @@ if args.mode == "rip":
 
 
 log("Parsing media data")
-infoproc = subprocess.Popen(["makemkvcon", "-r", "--progress=-same", "--messages=-stdout"
+infoproc = subprocess.Popen(["makemkvcon", "-r", "--progress=-same", "--messages=-stdout",
                             "info", f"{args.input_type}:{args.input_path}"],
                             text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
