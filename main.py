@@ -42,9 +42,9 @@ parser.add_argument("-P", "--part-type",
 args = parser.parse_args()
 
 
-def log(message, level=LOG_LEVELS["progress"]):
+def log(message, level=LOG_LEVELS["progress"], end="\n"):
     if level <= LOG_LEVELS[args.log_level]:
-        print(message)
+        print(message, end=end)
 
 
 def seasonString(i):
@@ -240,8 +240,12 @@ min_length = sorted_titles[args.amount - 1]["length"]
 
 
 log(f"Ripping: {files}")
-ripproc = subprocess.Popen(["makemkvcon", "-r", "--progress=-same", "--messages=-stdout", f"--minlength={min_length}", "--decrypt", "--directio=true"
-                            "mkv", f"{args.input_type}:{args.input_path}", "all", media_dir],
+ripproc = subprocess.Popen(["makemkvcon", "-r", "--progress=-same",
+                            "--messages=-stdout",
+                            f"--minlength={min_length}",
+                            "--decrypt", "--directio=true",
+                            "mkv", f"{args.input_type}:{args.input_path}",
+                            "all", media_dir],
                            text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
 
