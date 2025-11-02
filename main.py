@@ -260,7 +260,7 @@ for line in ripproc.stdout:
     parse_line(line)
 
 ripproc.wait()
-''''
+'''
 
 for i, file in enumerate(files):
     file_path = pathlib.Path(media_dir, file)
