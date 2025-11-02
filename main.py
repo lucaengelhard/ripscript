@@ -44,6 +44,7 @@ args = parser.parse_args()
 
 def log(message, level=LOG_LEVELS["progress"], end="\n"):
     if level <= LOG_LEVELS[args.log_level]:
+        sys.stdout.write("\r\033[K")
         print(message, end=end)
 
 
@@ -92,8 +93,11 @@ def parse_line(line):
             percent = round(current * 100 / max, 2)
             percent_total = round(total * 100 / max, 2)
 
-            log(f"\r\033{parse_state["current_process"]
-                         } - {percent}% | {percent_total}%", end="\r")
+            if arg.log_level >= LOG_LEVELS["progress"]:
+                sys.stdout.write("\r\033[K")  # carriage return + clear line
+                sys.stdout.write(
+                    f"{parse_state['current_process']} - {percent}% | {percent_total}%")
+                sys.stdout.flush()
 
         case "PRGT" | "PRGC":
             # Current and total progress title
@@ -104,6 +108,7 @@ def parse_line(line):
             # name - name string
             code, id, name = safe_split(content, 3)
             parse_state["current_process"] = name
+            log("")
 
         case "DRV":
             # Drive scan messages
